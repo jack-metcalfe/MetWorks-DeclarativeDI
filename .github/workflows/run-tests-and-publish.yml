@@ -11,10 +11,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
+      - name: Install .NET SDK (inline, avoids actions/setup-dotnet)
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Installing dotnet via dotnet-install.sh (channel 8.0)..."
+          wget -q https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh
+          chmod +x /tmp/dotnet-install.sh
+          /tmp/dotnet-install.sh --channel 8.0 --install-dir $HOME/dotnet --architecture x64
+          export PATH="$HOME/dotnet:$PATH"
+          echo "dotnet version:"
+          $HOME/dotnet/dotnet --info
 
       - name: Restore
         run: dotnet restore MetWorks.WeatherApp.sln
@@ -24,10 +31,8 @@ jobs:
 
       - name: Run tests (produce TRX)
         run: |
-          # Ensure a deterministic output folder
           RESULTS_DIR="$(pwd)/artifacts/TestResults"
           mkdir -p "$RESULTS_DIR"
-          # Run tests and emit a TRX per test project into RESULTS_DIR
           dotnet test MetWorks.WeatherApp.sln --no-build --logger "trx;LogFileName=results.trx" --results-directory "$RESULTS_DIR" --configuration Release
 
       - name: Upload test results artifact
