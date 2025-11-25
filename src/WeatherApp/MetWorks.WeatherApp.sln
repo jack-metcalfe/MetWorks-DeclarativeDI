@@ -7,21 +7,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core.Diagnostics", "Core.Diagnostics", "{6A754FFE-FCB8-F85F-3762-05201F752B2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetWorks.Core.Diagnostics", "src\Core.Diagnostics\MetWorks.Core.Diagnostics.csproj", "{2DA6053C-03DB-4D79-B207-E6944D28DD04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetWorks.Core.Diagnostics", "..\..\src\Core.Diagnostics\MetWorks.Core.Diagnostics.csproj", "{2DA6053C-03DB-4D79-B207-E6944D28DD04}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core.Models", "Core.Models", "{86F9E87F-326A-E0DC-7B61-597748421DF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetWorks.Core.Models", "src\Core.Models\MetWorks.Core.Models.csproj", "{459EB58D-A21F-4676-84B0-09D85EC09C93}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetWorks.Core.Models", "..\..\src\Core.Models\MetWorks.Core.Models.csproj", "{459EB58D-A21F-4676-84B0-09D85EC09C93}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validation.Exchange", "Validation.Exchange", "{D6EB33BB-64ED-174C-E4AA-DE3821CF1BDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetWorks.Validation.Exchange", "src\Validation.Exchange\MetWorks.Validation.Exchange.csproj", "{CFB4AB51-891F-407B-8A23-B4A3F59B1991}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetWorks.Validation.Exchange", "..\..\src\Validation.Exchange\MetWorks.Validation.Exchange.csproj", "{CFB4AB51-891F-407B-8A23-B4A3F59B1991}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validation.Tests", "Validation.Tests", "{151B334F-BC42-0511-F8BE-262C97659648}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetWorks.Validation.Tests", "tests\Validation.Tests\MetWorks.Validation.Tests.csproj", "{D18E2AE4-E2E9-4E68-916C-F9042D5F6566}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetWorks.Validation.Tests", "..\..\tests\Validation.Tests\MetWorks.Validation.Tests.csproj", "{D18E2AE4-E2E9-4E68-916C-F9042D5F6566}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
