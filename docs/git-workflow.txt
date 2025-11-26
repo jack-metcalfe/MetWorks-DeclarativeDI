@@ -1,0 +1,53 @@
+Git Workflow Cheat Sheet This project uses a simple 4‑step loop to keep local and remote branches in sync.
+
+Daily Workflow
+
+Sync before starting work Command: git pull origin main --rebase
+
+Fetches new commits from GitHub (origin).
+
+Rebases your local commits on top of the remote main branch.
+
+Keeps history linear (no merge bubbles).
+
+Make changes
+
+Edit files or add new ones.
+
+Save them in the repo folder.
+
+Stage and commit Command: git add <files> Command: git commit -m "Describe your change"
+
+git add tells Git which files to include.
+
+git commit records the snapshot with a message.
+
+Push to GitHub Command: git push origin main
+
+Uploads your commits to the remote main branch.
+
+Makes them visible on GitHub.
+
+Conflict Handling
+
+If git pull --rebase stops with conflicts:
+
+Open the files marked with <<<<<<<, =======, >>>>>>>.
+
+Fix the content manually.
+
+Stage the fixed files: git add <file>
+
+Continue the rebase: git rebase --continue
+
+Push again: git push origin main
+
+Best Practices
+
+Always pull with rebase before starting new work.
+
+Write clear commit messages.
+
+Keep changes small and focused.
+
+Use git status often to see what’s staged, committed, or untracked.
