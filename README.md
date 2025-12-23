@@ -1,108 +1,120 @@
 # MetWorks
 
-Monorepo for MetWorks projects. Each assembly lives under `src/<AssemblyName>` and tests live under `tests/<AssemblyName.Tests>>.
+Monorepo for MetWorks projects. Each assembly lives under `src/<AssemblyName>` and tests live under `tests/<AssemblyName.Tests>`.
 
 ## Quickstart
 
 1. Clone the repo:
-    ``git clone https://github.com/VikingsFan1024/MetWorks`.git` \n    cd MetWorks
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/MetWorks.git
+   cd MetWorks
+   ```
 
 2. Restore packages for the main solution:
-
-<`pretech
-`bash
-dotnet restore src/WeatherApp/MetWorks.WeatherApp.sln`
-
-</`printch>
+   ```bash
+   dotnet restore metworks-ddi-gen.sln
+   ```
 
 3. Build the solution:
-
-<`printch>
-dotnet build src/WeatherApp/MetWorks.WeatherApp.sln --configuration Debug
-</bpretech>
+   ```bash
+   dotnet build metworks-ddi-gen.sln --configuration Release
+   ```
 
 4. Run tests:
+   ```bash
+   dotnet test metworks-ddi-gen.sln --no-build
+   ```
 
-<bracket>
-find tests -name '*.csproj' -print0 | xargs -0 -n1 dotnet test
-</bracket>
+## Repository Layout
 
-## Repository layout
+- `src/` — project assemblies and solutions (one folder per assembly)
+- `tests/` — unit and integration tests
+- `.github/workflows/` — CI configurations (GitHub Actions)
+- `docs/` — design notes and conventions
+- `Directory.Build.props` — shared build settings
 
+## Conventions
 
-- ``src/  … project assemblies and solutions (one folder per assembly.
-- `tests/` \… unit and integration tests.
-- ``.github/actions/  … CI configurations (GitHub Actions).
-- `docs/` \… design notes and conventions.
-- `directory.Bluild.props ` \… shared build settings.
+- One Visual Studio solution per assembly under `src/<AssemblyName>/`
+- Keep implementation projects under `src/<AssemblyName>/` and tests under `tests/<AssemblyName.Tests>/`
+- Use `dotnet user-secrets` for local development; use a secret manager for staging/production
 
-# Conventions
+## CI
 
-- One Visual Studio solution per assembly under `src/<AssemblyName>/.
- - Keep implementation projects under `src/<AssemblyName>/ and tests under `tests/<AssemblyName.Tests/.
-- Use `Dotnet user-secrets` for local development; use a secret manager for staging/production.
+GitHub Actions runs restore, build, and tests on pushes and pull requests to main. See `.github/workflows/` for details.
 
-## CI 
+## Local Development Tips
 
-All purposes use GitHub Actions - restore, build, and run tests on pushes and pull requests to main. See `.github/actions/run-tests-and-publish.myl `for details.
-
-## Local development tips
-
-- If you use WSL, install the matching Dot.NET sDK inside WSL (dotnet-sdk-8.0) to run CLIN commands.
-- If you use Visual Studio on Windows, open the solution from `src/WeatherApp/MetWorks.WeatherApp.sln` and permit the client to restore.
+- If you use WSL, install the matching .NET SDK inside WSL (dotnet-sdk-8.0) to run CLI commands
+- If you use Visual Studio on Windows, open the solution from the repo root
 - To clean bins and obj artifacts locally:
-    `git clean -nd X   # preview
-    `git clean -fd X   # remove files (destructive)
+  ```bash
+  git clean -ndX   # preview
+  git clean -fdX   # remove files (destructive)
+  ```
 
-## Developer quick start
+## Testing GitHub Actions Locally
 
-- **Open the solution**: Use the top-level solution `MetWorks.sln` in the repo root.
+This repo supports testing Actions locally with [act](https://github.com/nektos/act):
+
+1. Copy `.act.env.example` to `.act.env`
+2. Add your GitHub personal access token to `.act.env`
+3. Run: `act -j <job-name>`
+
+## Developer Quick Start
+
+- **Open the solution**: Use `metworks-ddi-gen.sln` in the repo root
 - **Restore, build, test**:
   ```bash
-  dotnet restore MetWorks.sln
-  dotnet build MetWorks.sln --configuration Release
-  dotnet test MetWorks.sln --no-build    
+  dotnet restore metworks-ddi-gen.sln
+  dotnet build metworks-ddi-gen.sln --configuration Release
+  dotnet test metworks-ddi-gen.sln --no-build
+  ```
 
-## Run diagnostics validation:
+## Run Diagnostics Validation
 
+```bash
 export GITHUB_WORKSPACE="$(pwd)"
-SOLUTION=MetWorks.sln bash .github/scripts/validate-diagnostics.sh
+SOLUTION=metworks-ddi-gen.sln bash .github/scripts/validate-diagnostics.sh
+```
 
-Architectural principles
-Canonical DTO project: All shared data transfer objects live in DdiCodeGen.SourceDto. This avoids duplication and ensures a single source of truth for contracts.
+## Architectural Principles
 
-Minimal class libraries: New libraries are created with the met-classlib template. They start clean — no implicit references, no bundled DTOs.
+**Canonical DTO project**: All shared data transfer objects live in `DdiCodeGen.SourceDto`. This avoids duplication and ensures a single source of truth for contracts.
 
-Opt‑in references: Dependencies are added explicitly by developers using dotnet add reference or the provided helper scripts. Nothing is wired automatically, keeping assemblies small and intentional.
+**Minimal class libraries**: New libraries are created with the `met-classlib` template. They start clean — no implicit references, no bundled DTOs.
 
-Consistency: All .csproj files use lowercase booleans (true/false) and explicit language/version settings for clarity.
+**Opt-in references**: Dependencies are added explicitly by developers using `dotnet add reference` or the provided helper scripts. Nothing is wired automatically, keeping assemblies small and intentional.
 
-Auditability: Every decision (symbols, references, defaults) is documented in the template and solution README for future contributors.
+**Consistency**: All `.csproj` files use lowercase booleans (`true`/`false`) and explicit language/version settings for clarity.
 
-Workflow for contributors
-Create a new library
+**Auditability**: Every decision (symbols, references, defaults) is documented in the template and solution README for future contributors.
 
-bash
+## Workflow for Contributors
+
+### Create a New Library
+
+```bash
 dotnet new met-classlib -n MyLib -o src/MyLib
-This generates a minimal .csproj with defaults (net8.0, false, enable, latest).
+```
 
-Add references manually
+This generates a minimal `.csproj` with defaults (`net8.0`, `false`, `enable`, `latest`).
 
-bash
+### Add References Manually
+
+```bash
 dotnet add src/MyLib/MyLib.csproj reference src/DdiCodeGen.SourceDto/DdiCodeGen.SourceDto.csproj
-Or use the helper scripts (add-references.sh / add-references.cmd) for convenience.
+```
 
-Validate with CI
+Or use the helper scripts (`add-references.sh` / `add-references.cmd`) for convenience.
 
-CI builds both a plain instantiation and a reference‑enabled instantiation.
+### Validate with CI
 
-This ensures templates remain DRY and reproducible.
+CI builds both a plain instantiation and a reference-enabled instantiation. This ensures templates remain DRY and reproducible.
 
-Document rationale
+### Document Rationale
 
-Any new library should include a short README explaining its purpose and dependencies.
-
-This keeps onboarding smooth and avoids hidden coupling.
+Any new library should include a short README explaining its purpose and dependencies. This keeps onboarding smooth and avoids hidden coupling.
 
 ## Repository Management
 
